@@ -37,8 +37,8 @@ This runs the agent through 11 scripted customers and grades each one on what it
 actually did: which tools it called, and what state the order database ended up
 in. No judge model, so it is deterministic and costs about a cent.
 
-Over five runs on `gpt-4o` the agent scored 7, 7, 6, 7, 8, a mean of
-**7 out of 11**. The instructions in
+Over ten runs on `gpt-4o` the agent averaged **7.3 out of 11**, ranging from 6
+to 8. The instructions in
 `agent.py` are a first draft on purpose: they describe the job and say nothing
 about the rules the business actually runs on. The agent has to learn those from
 the conversations where it gets them wrong.
@@ -47,13 +47,15 @@ Five checks fail, and they are not all the same kind of problem:
 
 | Check | Passed | What goes wrong |
 |---|---|---|
-| `cancel-processed-order` | 0/5 | Does not know a shipped order has to go to the fulfillment team. |
-| `card-refund-timing` | 0/5 | Does not know card refunds take 5 to 7 days and gift cards are immediate. |
-| `exchange-with-variant-lookup` | 0/5 | Asks the customer for a product id. See below. |
-| `return-pending-order` | 2/5 | Tries to return an order that has not arrived. |
-| `identify-before-acting` | 3/5 | Acts on an order without establishing who it is talking to. |
+| `cancel-processed-order` | 0/10 | Does not know a shipped order has to go to the fulfillment team. |
+| `card-refund-timing` | 0/10 | Does not know card refunds take 5 to 7 days and gift cards are immediate. |
+| `exchange-with-variant-lookup` | 0/10 | Asks the customer for a product id. See below. |
+| `return-pending-order` | 6/10 | Tries to return an order that has not arrived. |
+| `identify-before-acting` | 7/10 | Acts on an order without establishing who it is talking to. |
 
-The other six checks passed 5 out of 5.
+The other six checks passed 10 out of 10. The first three fail every single time,
+so one run is enough to see them. The last two are coin flips, and a single run
+will sometimes tell you they are fine.
 
 Four of those are missing knowledge, and an optimization pass can fix them by
 learning the rule from the failures. The fifth is different:
