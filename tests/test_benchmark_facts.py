@@ -21,8 +21,10 @@ ITEM_RE = re.compile(r"\b(?:item id |item )(\d{10})\b")
 PAYMENT_RE = re.compile(r"\b((?:gift_card|credit_card|paypal)_\d+)\b")
 AMOUNT_RE = re.compile(r"\$(\d+\.\d{2})")
 
-# The one order id that is deliberately absent, used by the unknown-order sample.
+# Deliberately absent, used by the samples that check the agent reports a miss
+# instead of inventing one. Both are asserted to really be absent below.
 KNOWN_MISSING = {"#W1111111"}
+KNOWN_MISSING_CUSTOMERS = {("Jordan", "Reyes", "11111")}
 
 
 def rows() -> list[dict[str, str]]:
@@ -118,6 +120,11 @@ def test_customer_names_and_zips_resolve():
         if not found:
             continue
         first, last, zip_code = found.groups()
+        if (first, last, zip_code) in KNOWN_MISSING_CUSTOMERS:
+            assert store.match_user(first, last, zip_code) is None, (
+                f"{first} {last}/{zip_code} is meant to be absent but exists"
+            )
+            continue
         assert store.match_user(first, last, zip_code) is not None, (
             f"{row['sample_id']} identifies {first} {last}/{zip_code}, who is not in the database"
         )
