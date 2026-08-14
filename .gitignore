@@ -1,0 +1,30 @@
+.env
+.venv/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+
+logs/*.jsonl
+
+# RELAI local files
+.relai/config.toml
+.relai/.npmrc
+.relai/node_modules/
+.relai/runs/
+.relai/optimizer_runs/
+.relai/memory
+.relai/optimizer-state/
+.relai/optimizer-scope.json
+.relai/simulator.env
+.relai/tag-records/
+.relai/tmp/
+.relai/init-session.json
+.relai/init-session.lock
+.relai/.init-session.*.tmp
+.relai/learning-env-create-session.json
+.relai/learning-env-create-session.lock
+.relai/.learning-env-create-session.*.tmp
+
+# Internal, not for the public repo
+HANDOVER.md
+.relai-partial-killed-2026-08-14/
