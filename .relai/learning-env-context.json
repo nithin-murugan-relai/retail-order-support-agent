@@ -1,0 +1,15 @@
+{
+  "schema_version": "relai.learning_env_context.v1",
+  "agent": {
+    "entrypoint": "retail_support.agent:create_retail_agent",
+    "runner_summary": "Runs the Northwind retail support agent through agents.Runner.run with conversation history preserved across turns."
+  },
+  "components": [],
+  "log_notes": [],
+  "learning_env_guidance": [
+    "Use a raw string for each FixedTurn.content value; the adapter public input is plain customer chat text, not JSON-encoded conversation state.",
+    "The adapter resets retail_support.store once when it is built, then preserves multi-turn state by replacing its history with Runner.run(...).to_input_list() after each turn.",
+    "No file-backed user input is involved.",
+    "Runtime needs one live provider credential: OPENAI_API_KEY or ANTHROPIC_API_KEY. If both are set, retail_support.models.select_model() chooses OpenAI."
+  ]
+}
