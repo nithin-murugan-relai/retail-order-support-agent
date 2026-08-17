@@ -118,7 +118,7 @@ def build_environment(row_fields, sample_index):
         name=_sample_name(sample_id),
         description=expected_behavior,
         tags=["end-to-end"],
-        target=AgentTarget(agent_target="name"),
+        target=AgentTarget(),
         input=FixedInput(turns=[FixedTurn(content=user_input)]),
         evaluators=[_build_judge(row_fields)],
     )
@@ -134,6 +134,5 @@ benchmark = RELAIBenchmark(
     ),
     dataset_ref=StoredBenchmarkCsv(id=DATASET_ID),
     required_columns=REQUIRED_COLUMNS,
-    agent_target="name",
     build_environment=build_environment,
 )
