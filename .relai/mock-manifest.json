@@ -4,7 +4,8 @@
     {
       "id": "find_customer_by_name_zip",
       "target": "retail_support.agent:find_customer_by_name_zip",
-      "kind": "function",
+      "kind": "tool",
+      "recommendation": "do_not_mock",
       "final_policy": "do_not_mock",
       "reason": "Local deterministic store-backed lookup used directly by the agent.",
       "source": "src/retail_support/agent.py",
@@ -13,7 +14,8 @@
     {
       "id": "find_customer_by_email",
       "target": "retail_support.agent:find_customer_by_email",
-      "kind": "function",
+      "kind": "tool",
+      "recommendation": "do_not_mock",
       "final_policy": "do_not_mock",
       "reason": "Local deterministic store-backed lookup used directly by the agent.",
       "source": "src/retail_support/agent.py",
@@ -22,7 +24,8 @@
     {
       "id": "get_customer_details",
       "target": "retail_support.agent:get_customer_details",
-      "kind": "function",
+      "kind": "tool",
+      "recommendation": "do_not_mock",
       "final_policy": "do_not_mock",
       "reason": "Local deterministic store-backed read used directly by the agent.",
       "source": "src/retail_support/agent.py",
@@ -31,7 +34,8 @@
     {
       "id": "get_order_details",
       "target": "retail_support.agent:get_order_details",
-      "kind": "function",
+      "kind": "tool",
+      "recommendation": "do_not_mock",
       "final_policy": "do_not_mock",
       "reason": "Local deterministic store-backed read used directly by the agent.",
       "source": "src/retail_support/agent.py",
@@ -40,7 +44,8 @@
     {
       "id": "get_product_details",
       "target": "retail_support.agent:get_product_details",
-      "kind": "function",
+      "kind": "tool",
+      "recommendation": "do_not_mock",
       "final_policy": "do_not_mock",
       "reason": "Local deterministic store-backed read used directly by the agent.",
       "source": "src/retail_support/agent.py",
@@ -49,7 +54,8 @@
     {
       "id": "cancel_pending_order",
       "target": "retail_support.agent:cancel_pending_order",
-      "kind": "function",
+      "kind": "tool",
+      "recommendation": "do_not_mock",
       "final_policy": "do_not_mock",
       "reason": "Local deterministic mutation whose live behavior is part of the agent contract.",
       "source": "src/retail_support/agent.py",
@@ -58,7 +64,8 @@
     {
       "id": "modify_pending_order_address",
       "target": "retail_support.agent:modify_pending_order_address",
-      "kind": "function",
+      "kind": "tool",
+      "recommendation": "do_not_mock",
       "final_policy": "do_not_mock",
       "reason": "Local deterministic mutation whose live behavior is part of the agent contract.",
       "source": "src/retail_support/agent.py",
@@ -67,7 +74,8 @@
     {
       "id": "return_delivered_order_items",
       "target": "retail_support.agent:return_delivered_order_items",
-      "kind": "function",
+      "kind": "tool",
+      "recommendation": "do_not_mock",
       "final_policy": "do_not_mock",
       "reason": "Local deterministic mutation whose live behavior is part of the agent contract.",
       "source": "src/retail_support/agent.py",
@@ -76,7 +84,8 @@
     {
       "id": "exchange_delivered_order_items",
       "target": "retail_support.agent:exchange_delivered_order_items",
-      "kind": "function",
+      "kind": "tool",
+      "recommendation": "do_not_mock",
       "final_policy": "do_not_mock",
       "reason": "Local deterministic mutation whose live behavior is part of the agent contract.",
       "source": "src/retail_support/agent.py",
@@ -85,7 +94,8 @@
     {
       "id": "transfer_to_fulfillment_team",
       "target": "retail_support.agent:transfer_to_fulfillment_team",
-      "kind": "function",
+      "kind": "tool",
+      "recommendation": "do_not_mock",
       "final_policy": "do_not_mock",
       "reason": "Local deterministic handoff helper used directly by the agent.",
       "source": "src/retail_support/agent.py",

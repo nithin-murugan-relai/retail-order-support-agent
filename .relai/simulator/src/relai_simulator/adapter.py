@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from agents import Runner
-from dotenv import load_dotenv
 from relai_simulator.adapter_contract import AdapterRuntime, AgentAdapter
 
 from retail_support import store
@@ -12,10 +11,10 @@ class ProjectAgentAdapter:
     capabilities = frozenset({"run_turn"})
 
     def __init__(self) -> None:
-        load_dotenv()
         store.reset()
         self._agent = create_retail_agent()
-        self._history: list[dict[str, object]] = []
+        self.agent_or_tools = self._agent
+        self._history: list[dict[str, str]] = []
 
     async def run_turn(self, user_input: object, runtime: AdapterRuntime):
         if not isinstance(user_input, str):
@@ -36,6 +35,8 @@ def build_agent_adapter(
     agent_target: str | None = None,
     runtime: AdapterRuntime | None = None,
 ) -> AgentAdapter:
-    if agent_target is not None:
-        raise ValueError("retail_support exposes no named agent targets.")
+    if agent_target not in (None, "name"):
+        raise ValueError(
+            "retail_support supports only the default agent target and the legacy 'name' alias."
+        )
     return ProjectAgentAdapter()
