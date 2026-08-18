@@ -1,15 +1,15 @@
 # Northwind Retail Support Agent
 
-A small, runnable customer-support agent for an online store, plus a benchmark
-that measures whether it follows the store's actual business rules.
+A customer-support agent for an online store, with a benchmark that measures
+whether it follows the store's business rules.
 
-It handles what an e-commerce back office really deals with: identifying a
+It handles what an e-commerce back office deals with day to day: identifying a
 customer, cancelling an order that has not shipped, changing a shipping address,
 starting a return or an exchange on a delivered order, and handing anything else
 to the human fulfillment team.
 
-The agent is deliberately small. `src/retail_support/agent.py` is the entire
-thing: ten tools and one instruction block, both readable in a few minutes.
+`src/retail_support/agent.py` is the whole agent: ten tools and one instruction
+block, readable in a few minutes.
 
 ## Run it
 
@@ -39,40 +39,9 @@ it actually did**: which tools it called, and what state the order database
 ended up in. No judge model is involved, so it is deterministic, repeatable, and
 costs about a cent.
 
-The agent scores around **7 out of 11**. That is on purpose.
-
-## Why it fails, and what to do about it
-
-The instructions in `agent.py` are a realistic first draft: they describe the job
-and say nothing about the rules the business runs on. The rules are real, and the
-tools enforce them, but the agent has not been told what they are.
-
-Over ten runs the same five checks account for nearly all the failures:
-
-| Check | Passed | What goes wrong |
-|---|---|---|
-| `cancel-processed-order` | 0/10 | Does not know a shipped order must go to the fulfillment team |
-| `card-refund-timing` | 0/10 | Does not know card refunds take 5 to 7 days and gift cards are immediate |
-| `exchange-with-variant-lookup` | 0/10 | Asks the customer for an internal product id |
-| `return-pending-order` | 6/10 | Tries to return an order that has not arrived |
-| `identify-before-acting` | 7/10 | Acts on an order without establishing who it is talking to |
-
-The other six pass 10 out of 10.
-
-Four of those are missing knowledge and can be fixed by telling the agent the
-rule. The third one cannot:
-
-> A customer says the Tea Kettle they received is the wrong one and asks to see
-> the other versions. The agent calls `get_product_details("Tea Kettle")`, gets
-> back "No such product", and asks the customer to supply a product ID. No real
-> customer knows their product ID.
-
-`get_order_details` prints item ids but never product ids, so there is no path
-from "the Tea Kettle in my order" to the product the agent needs to look up. No
-amount of prompt wording fixes that. The tool has to change.
-
-That mix is the point of this repository: some failures are knowledge, one is
-structure, and a good optimization pass should find both.
+The agent does not pass all of them. Every conversation, pass or fail, is written
+to `logs/check-*.jsonl` with the tool calls it made and the reason it was marked
+down, which is the material you need to work out what to change.
 
 ## What is in here
 
@@ -86,10 +55,9 @@ structure, and a good optimization pass should find both.
 | `data/retail_db.json` | 8 customers, 22 orders, 33 products |
 | `tests/` | 24 tests, no model calls |
 
-### The rules
+## Store policy
 
-Enforced by the tools, asserted by the benchmark, absent from the agent's
-instructions:
+What the tools enforce and the benchmark checks against:
 
 - Identify the customer before touching any order, and never accept a customer
   id the shopper supplies.
@@ -98,20 +66,23 @@ instructions:
 - An exchange stays within one product. A different product is a return.
 - Cancellations accept two reasons only: `no longer needed` or `ordered by mistake`.
 - Gift card refunds are immediate; card and PayPal take 5 to 7 business days.
-- Anything else goes to the fulfillment team, not to improvisation.
+- Anything the tools do not cover goes to the fulfillment team.
 
 ## The benchmark
 
 `benchmarks/retail_order_benchmark.csv` holds 50 scenarios as
-`sample_id,input,expected_behavior,rubric`. A train/holdout split is provided:
+`sample_id,input,expected_behavior,rubric`, covering the happy paths, the status
+rules, refund handling, escalation, and cases where the agent should refuse.
 
-- `benchmarks/retail_order_train.csv` (33) for optimizing against
-- `benchmarks/retail_order_holdout.csv` (17) for checking that an improvement
+A train/holdout split is provided:
+
+- `benchmarks/retail_order_train.csv` (33) to work against
+- `benchmarks/retail_order_holdout.csv` (17) to check that an improvement
   generalized rather than memorized
 
-The split is by rule, not at random: every behaviour the agent has to learn
-appears on both sides, against different orders and different customers. If a
-change lifts train and leaves holdout flat, it learned the samples, not the rule.
+The split is by rule, not at random: every behaviour appears on both sides,
+against different orders and different customers. If a change lifts train and
+leaves holdout flat, it learned the samples rather than the rule.
 
 Most rows are generated by `scripts/expand_benchmark.py`, which reads order ids,
 prices, item ids and payment methods straight out of `data/retail_db.json`, so no
@@ -127,15 +98,13 @@ uv run pytest
 against the tools, and verify that every fact the benchmark asserts resolves
 against the database.
 
-## A note on grading agents
+## A note on the checks
 
-Worth knowing if you extend the checks: grade on **state and tool calls, not on
-keywords in the reply**. Early versions of these checks searched the response
-text and produced a string of false failures. A correct refusal quotes the thing
-it is refusing, so "I'm unable to offer the requested 20% discount" contains
-"20%". Models write "5-7" with an en dash and "couldn't" with a curly apostrophe.
-The verifiers in `scripts/check_agent.py` assert against the order database
-wherever they possibly can.
+If you extend them, grade on **state and tool calls, not on keywords in the
+reply**. A correct refusal quotes the thing it is refusing, so "I'm unable to
+offer the requested 20% discount" contains "20%". Models write "5-7" with an en
+dash and "couldn't" with a curly apostrophe. The verifiers in
+`scripts/check_agent.py` assert against the order database wherever they can.
 
 ## Which model it runs
 

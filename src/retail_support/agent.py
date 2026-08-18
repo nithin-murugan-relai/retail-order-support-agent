@@ -1,8 +1,7 @@
 """The retail order-support agent: its tools and its instructions.
 
-This file is the whole agent. The instructions below and the tool bodies are the
-part you are meant to change; the store and the benchmark are the fixed part of
-the problem.
+This file is the whole agent: the tools it can call and the instructions it runs
+under. The order database in store.py and the benchmark are separate from it.
 """
 
 from __future__ import annotations
@@ -221,13 +220,6 @@ TOOLS = [
 
 # --- instructions -----------------------------------------------------------
 
-# This is a first draft, on purpose. It is roughly what someone writes before
-# they have watched the agent fail: a description of the job and nothing about
-# the rules the business actually runs on.
-#
-# The rules are real. They are enforced by the tools in this file and asserted by
-# benchmarks/retail_order_benchmark.csv. This agent simply does not know them yet.
-# Closing that gap is the exercise.
 RETAIL_AGENT_INSTRUCTIONS = """
 You are a customer support agent for Northwind Retail, an online store.
 
