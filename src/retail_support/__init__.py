@@ -1,4 +1,4 @@
-"""Terminal retail order-support demo agent for RELAI learning loops."""
+"""Terminal retail order-support demo agent."""
 
 __all__ = ["__version__"]
 

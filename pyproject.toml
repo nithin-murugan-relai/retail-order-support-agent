@@ -1,7 +1,7 @@
 [project]
-name = "relai-retail-support-agent"
+name = "retail-support-agent"
 version = "0.1.0"
-description = "Terminal retail order-support agent for RELAI learning loops."
+description = "Terminal retail order-support agent with a policy benchmark."
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [

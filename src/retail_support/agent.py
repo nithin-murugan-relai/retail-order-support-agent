@@ -1,8 +1,8 @@
 """The retail order-support agent: its tools and its instructions.
 
 This file is the whole agent. The instructions below and the tool bodies are the
-surface a RELAI optimization run is allowed to change; the store and the
-benchmark are the fixed part of the problem.
+part you are meant to change; the store and the benchmark are the fixed part of
+the problem.
 """
 
 from __future__ import annotations
@@ -226,9 +226,8 @@ TOOLS = [
 # the rules the business actually runs on.
 #
 # The rules are real. They are enforced by the tools in this file and asserted by
-# benchmarks/retail_order_benchmark.csv. This agent simply does not know them yet,
-# and has to learn them from the conversations where it gets them wrong. That is
-# the gap an optimization pass is meant to close.
+# benchmarks/retail_order_benchmark.csv. This agent simply does not know them yet.
+# Closing that gap is the exercise.
 RETAIL_AGENT_INSTRUCTIONS = """
 You are a customer support agent for Northwind Retail, an online store.
 

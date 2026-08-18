@@ -2,7 +2,7 @@
 
 Every check is a deterministic assertion about tool calls and final database
 state, so this costs a cent or so and needs no judge model. Conversations are
-written to logs/ whether they pass or fail, which is what RELAI learns from.
+written to logs/ whether they pass or fail.
 
     ./start.sh --check
 """
@@ -374,8 +374,8 @@ async def main() -> int:
     print(f"\n{BOLD}{passed_count}/{len(CHECKS)} passed{RESET}")
     if failures:
         print(
-            f"\n{DIM}The failing conversations are saved in logs/. That is what RELAI turns\n"
-            f"into learning environments and optimizes against.{RESET}"
+            f"\n{DIM}The failing conversations are saved in logs/, ready to feed into\n"
+            f"whatever you use to improve the agent.{RESET}"
         )
     return 0
 
